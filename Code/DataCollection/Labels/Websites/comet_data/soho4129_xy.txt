@@ -1,1 +1,0 @@
-<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL "https://sungrazer.nrl.navy.mil/sites/sungrazer/files/comet_txts/soho4129_xy.txt" was not found on this server.</p></body></html>

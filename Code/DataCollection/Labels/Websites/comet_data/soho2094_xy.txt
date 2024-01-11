@@ -1,0 +1,8 @@
+#SOHO-2094
+#Discoverer: M. Kusiak
+#Comet Group: kreutz
+#Original Report: 2011-06-09 06:33:09
+#    DATE     TIME    TEL    COL     ROW  
+ 2011-06-09 10:24:07  C2    745.67   28.33
+ 2011-06-09 10:36:05  C2    746.67   36.33
+ 2011-06-09 11:00:05  C2    743.50   20.75

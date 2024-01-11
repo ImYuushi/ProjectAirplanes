@@ -1,0 +1,8 @@
+#SOHO-0229
+#Discoverer: 
+#Comet Group: 
+#Original Report: 
+#    DATE     TIME    TEL    COL     ROW  
+ 1997-11-01 22:06:05  C2    451.79    9.50
+ 1997-11-01 22:21:05  C2    443.65   24.61
+ 1997-11-01 22:41:05  C2    434.94   45.80

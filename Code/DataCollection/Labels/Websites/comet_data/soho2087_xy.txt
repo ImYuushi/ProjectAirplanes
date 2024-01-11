@@ -1,0 +1,8 @@
+#SOHO-2087
+#Discoverer: S. Schmalz
+#Comet Group: kreutz
+#Original Report: 2011-06-05 22:03:59
+#    DATE     TIME    TEL    COL     ROW  
+ 2011-06-05 23:53:32  C2    800.50   15.25
+ 2011-06-06 00:17:43  C2    803.75   30.50
+ 2011-06-06 00:29:50  C2    804.25   36.88
