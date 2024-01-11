@@ -82,6 +82,7 @@ def parse_all_comets():
 
     # print(comet_data_list)
     df = pd.DataFrame.from_dict(comet_data_list)
+    df.to_csv("all_comets.csv")
     # print(comet_data_list[0])
     print(df)
 
@@ -111,5 +112,5 @@ def clean_dead_urls():
 # create_labels_csv([2021])
 # create_labels_csv(range(1996,2022))
 # clean_dead_urls()
-# parse_all_comets()
+parse_all_comets()
 
