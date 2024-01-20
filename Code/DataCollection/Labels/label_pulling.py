@@ -108,9 +108,9 @@ def clean_dead_urls():
         
 
 
-# create_labels_csv([2018,2019,2020,2021])
+# create_labels_csv([2018,2019,2020,2022])
 # create_labels_csv([2021])
-# create_labels_csv(range(1996,2022))
-# clean_dead_urls()
+create_labels_csv(range(1996,2023))
+clean_dead_urls()
 parse_all_comets()
 
