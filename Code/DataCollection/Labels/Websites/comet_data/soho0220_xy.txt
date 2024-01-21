@@ -1,8 +1,0 @@
-#SOHO-0220
-#Discoverer: 
-#Comet Group: 
-#Original Report: 
-#    DATE     TIME    TEL    COL     ROW  
- 1997-10-08 17:47:20  C2    921.22   58.22
- 1997-10-08 18:07:41  C2    900.92   76.88
- 1997-10-08 18:20:46  C2    889.15   88.28

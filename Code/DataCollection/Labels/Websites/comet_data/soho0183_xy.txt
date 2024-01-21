@@ -1,8 +1,0 @@
-#SOHO-0183
-#Discoverer: 
-#Comet Group: 
-#Original Report: 
-#    DATE     TIME    TEL    COL     ROW  
- 1997-05-31 04:30:06  C2    724.56  123.71
- 1997-05-31 05:30:05  C2    730.21  166.39
- 1997-05-31 06:27:05  C2    733.99  209.56
