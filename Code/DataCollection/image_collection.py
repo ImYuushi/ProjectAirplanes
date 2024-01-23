@@ -45,7 +45,7 @@ def dl_img(img_save_path_base,line):
     # print(spec_img_path)
     if not spec_img_path.is_file():
         with open(spec_img_path,'wb') as f2:
-            # print(f'downloading: {line[-26:-1]}')
+            print(f'downloading: {line[-26:-1]}')
             date = line[-26:-18]
             t = line[-17:-13]
             r = requests.get(line.rstrip(),stream=True)
@@ -93,9 +93,38 @@ def create_img_csv(year, camera):
             # print(t)
     df = pd.DataFrame.from_dict(cols)
     df.to_csv(csv_save_path)
-    print(df)
-y = 2020
-c = 'c3'
+    # print(df)
+
+def clean_dead_images(year,camera):
+    """
+    This function exists, because some of the SOHO pictures are broken (example: 20200327_0730_c3).
+    These pictures must be removed with at a self defined cutoff (config.IMG_MINSIZE)
+    """
+    csv_save_path = config.data_path.joinpath('csvs').joinpath("Image_csvs").joinpath(f"image_data_{year}_{camera}.csv")
+    df = pd.read_csv(csv_save_path,\
+                    dtype = {'Date' : str, 'Time' : str})
+
+    for idx, row in df.iterrows():
+        d = row["Date"]
+        t = row["Time"]
+        img_save_path_spec = config.data_path.joinpath("images_dl").joinpath(f"images_{year}_{camera}")\
+        .joinpath(f'{d}_{t}_{camera}_1024.jpg')
+        # print(row)
+        # print(f'd: {d}, t: {t}')
+
+        # return
+        if img_save_path_spec.stat().st_size <= 1000 * config.IMG_MINSIZE:
+            # print(f"I WANNA DELeTE {img_save_path_spec}")
+            img_save_path_spec.unlink()
+            df.drop(index=idx,inplace=True)
+    df.to_csv(csv_save_path,index=False)
+
+#20200703_1330_c3_1024.jpg
+
+            
+
+
+
 def image_collection(years,cameras, generate = False, create_new_csv = False, download = False):
     for year in years:
         for camera in cameras:
@@ -108,6 +137,10 @@ def image_collection(years,cameras, generate = False, create_new_csv = False, do
                 create_img_csv(year,camera)
             if download:
                 download_imgs(year,camera)
+            if config.DC_CLEANUP:
+                print('Cleaning broken images')
+                clean_dead_images(year,camera)
+
 # gen_urls(y,c)
 # create_img_csv(y,c)
 # download_imgs(y, c)
