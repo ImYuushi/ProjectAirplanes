@@ -19,5 +19,5 @@ from Code.DataCollection.label_pulling import collect_labels
 # print('Collecting Labels')
 # collect_labels()
 print('Collecting Images')
-# image_collection(config.years, config.cameras,generate = False, create_new_csv=True, download=False)
+
 image_collection(config.years, config.cameras,generate = config.DC_GENERATE_URLS, create_new_csv=config.DC_CREATE_NEW_CSV, download=config.DC_DOWNLOAD_IMG)

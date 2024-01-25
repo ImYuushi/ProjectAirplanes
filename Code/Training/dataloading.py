@@ -110,7 +110,9 @@ def dataloading_splitting():
         # print(f'moving ({f}) to ({val_set_dir.joinpath(f_category).joinpath(f_name)})')
         f.rename(val_set_dir.joinpath(f_category).joinpath(f_name))
 
-    
+
+
+
 
 def dataloading():
     if config.DL_REDO_VALIDATION_SPLIT or not dataloading_ready():
