@@ -1,11 +1,35 @@
 from pathlib import Path 
+from torch.utils.data import randomsplit()
 
-import sys
-path_root = Path(__file__).parents[2]
-sys.path.append(str(path_root))
-# print(str(path_root))
-# print(sys.path)
+
 from Code import config
-from Code.Training.dataloading import dataloading 
+from Code.Training import datasets,transforms
+from Code.Training.Models import get_model
 
-dataloading()
+def validation_split():
+    length = np.load(config.data_path.joinpath('Labels').joinpath('labeled_images.npy')).shape[0]
+
+
+
+
+
+def main():
+    transform = transforms.get_transform(train= True)
+    train_set, val_set, test_set =  get_dataset(transform)
+    #make a dataloader for all three sets 
+
+    #do loss function
+
+    #do LR adjustment stuff
+
+    #make a train function incorporating everything
+    
+    #do eval function 
+
+    #debug
+    #debug
+    #debug more
+
+
+
+

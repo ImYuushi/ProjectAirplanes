@@ -26,3 +26,7 @@ IMG_MINSIZE = 741 #in kb
 DL_REDO_VALIDATION_SPLIT = False
 DL_RATIO_TRAIN_VAL = 0.2 # should be between 0 and 1 with the value beeing the percentage of the whole dataset being in the validation set
 
+#model
+MODELNAME = 'FCNN_RN50'
+PRETRAINED = True 
+TRAINABLE_BBL = 5
