@@ -151,36 +151,85 @@ def moving_imgs():
     
     if not (config.data_path.joinpath('Images').is_dir()):
         Path.mkdir(config.data_path.joinpath('Images'))
-    if not (config.data_path.joinpath('Images').joinpath('Conf').is_dir()):
-        Path.mkdir(config.data_path.joinpath('Images').joinpath('Conf'))
-    if not (config.data_path.joinpath('Images').joinpath('NoConf').is_dir()):
-        Path.mkdir(config.data_path.joinpath('Images').joinpath('NoConf'))
+    # if not (config.data_path.joinpath('Images').joinpath('Conf').is_dir()):
+    #     Path.mkdir(config.data_path.joinpath('Images').joinpath('Conf'))
+    # if not (config.data_path.joinpath('Images').joinpath('NoConf').is_dir()):
+    #     Path.mkdir(config.data_path.joinpath('Images').joinpath('NoConf'))
+    arr = np.load(config.data_path.joinpath('Labels').joinpath('labeled_images.npy'))
+
     
     
-    
-    for _,row in tqdm(df.iterrows()):
-        row_time = row['Time']
-        row_date = row['Date']
-        tel = row['Tel']
-        t = row_time
-        d = row_date
+    for idx in tqdm(range(arr.shape[0])):
+        row_time = arr[idx,1]
+        row_date = arr[idx,0]
+        tel = arr[idx,2]
+        t = str(row_time)
+        d = str(row_date)
+        while len(t) < 4:
+            t = '0' + t
         # return
         #this code here is stupid, it could be easier with using .name, oh well
+        name = f'{d}_{t}_c{tel}_1024.jpg'
         image_path = config.data_path.joinpath(f'images_dl')\
-                    .joinpath(f'images_{d[:4]}_{tel.lower()}')\
-                    .joinpath(f'{d}_{t}_{tel.lower()}_1024.jpg')
-        image_path_new = config.data_path.joinpath('Images')
-        if (row['Label'] == 0):
-            image_path_new = image_path_new.joinpath('NoConf')
-        else:
-            image_path_new = image_path_new.joinpath('Conf')
+                    .joinpath(f'images_{d[:4]}_c{tel}')\
+                    .joinpath(name)
+        image_path_new = config.data_path.joinpath('Images').joinpath(name)
+        assert(image_path.name == image_path_new.name)
         # print(f'moving from ({image_path}) to ({image_path_new})')
         shutil.move(image_path,image_path_new)
+import torch
+def calculate_norm_vals():
+    from Code.Training import datasets 
+    # from torchvision import transforms
+    from torch.utils import data
+    from torchvision.transforms import v2 as T
+    t = []
+    # if train:
+    #     transforms.append(T.RandomHorizontalFlip(0.5))
+    t.append(T.ToDtype(torch.float, scale=True))
+    t.append(T.ToPureTensor())
+    dataset = datasets.fixedSizeBBoxesDatasetNoBGLABELS(root = config.data_path.joinpath('Images')\
+                        , transforms=T.Compose(t))
 
+    loader = data.DataLoader(dataset,
+                            batch_size=32,
+                            num_workers=0,
+                            shuffle=False,
+                            drop_last=False)
+
+    mean = 0.0
+    for images, _ in tqdm(loader):
+        batch_samples = images.size(0) 
+        images = images.view(batch_samples, images.size(1), -1)
+        mean += images.mean(2).sum(0)
+    mean = mean / len(loader.dataset)
+
+    var = 0.0
+    pixel_count = 0
+    for images, _ in tqdm(loader):
+        batch_samples = images.size(0)
+        images = images.view(batch_samples, images.size(1), -1)
+        var += ((images - mean.unsqueeze(1))**2).sum([0,2])
+        pixel_count += images.nelement()
+    std = torch.sqrt(var / pixel_count)
+    print(f'IMAGES_MEAN = {mean}\nIMAGES_STD = {std}')
+
+def drop_negatives():
+    arr_whole = np.load(config.data_path.joinpath('Labels').joinpath('labeled_images.npy'))
+    rows = 0
+    arr_pos = np.empty([0,arr_whole.shape[1]],dtype=arr_whole.dtype)
+    for i in range(arr_whole.shape[0]):
+        if arr_whole[i,3]>0:
+            arr_pos = np.vstack([arr_pos,arr_whole[i,:]])
+    print(arr_pos.shape)
+    np.save(config.data_path.joinpath('Labels').joinpath('confirmation_images.npy'), arr_pos)
+    
 
 def preprocessing():
-    adding_labels2(config.years, config.cameras)
-    # moving_imgs()
-
+    # adding_labels2(config.years, config.cameras)
+    drop_negatives()
+    moving_imgs()
+    # calculate_norm_vals()
+    
 
 preprocessing()
